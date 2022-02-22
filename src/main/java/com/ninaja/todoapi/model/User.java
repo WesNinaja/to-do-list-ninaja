@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -11,25 +13,40 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name = "users")
+@Table(name = "usuarios")
 public class User {
 
-	private @Id String email;
-	private String name;
-	private String password;
-	private String token;
-
-
-	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-	@JsonIgnoreProperties("user")
-	private List<Task> tasks;
-
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String email;
+	private String nome;
+	private String senha;
 	
+
+
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties("usuario")
+	private List<Task> tarefas;
+
+
 	//Getters and Setters
+	public Long getId() {
+		return id;
+	}
+
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+
 	public String getEmail() {
 		return email;
 	}
+
 
 
 	public void setEmail(String email) {
@@ -37,46 +54,43 @@ public class User {
 	}
 
 
-	public String getName() {
-		return name;
+
+	public String getNome() {
+		return nome;
 	}
 
 
-	public void setName(String name) {
-		this.name = name;
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 
-	public String getPassword() {
-		return password;
+
+	public String getSenha() {
+		return senha;
 	}
 
 
-	public void setPassword(String password) {
-		this.password = password;
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 
 
-	public String getToken() {
-		return token;
+
+	public List<Task> getTarefas() {
+		return tarefas;
 	}
 
 
-	public void setToken(String token) {
-		this.token = token;
+
+	public void setTarefas(List<Task> tarefas) {
+		this.tarefas = tarefas;
 	}
 
 
-	public List<Task> getTasks() {
-		return tasks;
-	}
-
-
-	public void setTasks(List<Task> tasks) {
-		this.tasks = tasks;
-	}
 	
-
 	
 	
 
