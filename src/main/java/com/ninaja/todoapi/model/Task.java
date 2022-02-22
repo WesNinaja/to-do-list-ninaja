@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,24 +24,26 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table(name = "tasks")
 public class Task {
 
-	/*
-	 * private String priority;
-	 * 
-	 * private boolean concluded;
-	 */
+	 
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@NotNull
-	private String title;
+	private String titulo;
 
 	@NotNull
-	private String description;
+	private String descricao;
 
 	@NotNull
-	private Date deadLine;
+	private Date dataFinal;
+	
+	@Enumerated(EnumType.STRING)
+	private TaskPriority prioridade;
+	
+	
+	private Boolean concluido = false;
 
 	@CreationTimestamp
 	@Column(name = "created_at", nullable = false, updatable = false)
@@ -50,28 +54,29 @@ public class Task {
 	private Date updatedAt;
 	
 	@ManyToOne
-	@JoinColumn(name = "fk_user")
-	@JsonIgnoreProperties("tasks")
-	private User user;
+	@JoinColumn(name = "fk_usuario")
+	@JsonIgnoreProperties("tarefas")
+	private User usuario;
 	
 	
 	//Constructors
 	public Task() {
 	}
 	
-	public Task(Long id, String title, String description, Date deadLine, Date createdAt,
-			Date updatedAt, User user) {
+	public Task(Long id, String titulo, String descricao, TaskPriority prioridade, Date dataFinal, Boolean concluido, Date createdAt,
+			Date updatedAt, User usuario) {
 		this.id = id;
-		this.title = title;
-		this.description = description;
-		this.deadLine = deadLine;
+		this.titulo = titulo;
+		this.descricao = descricao;
+		this.prioridade = prioridade;
+		this.dataFinal = dataFinal;
+		this.concluido = concluido;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
-		this.user = user;
+		this.usuario = usuario;
+		
 	}
-
-
-
+	
 
 	//Getters and Setters
 
@@ -83,28 +88,44 @@ public class Task {
 		this.id = id;
 	}
 
-	public String getTitle() {
-		return title;
+	public String getTitulo() {
+		return titulo;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getDescricao() {
+		return descricao;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
-	public Date getDeadLine() {
-		return deadLine;
+	public Date getDataFinal() {
+		return dataFinal;
 	}
 
-	public void setDeadLine(Date deadLine) {
-		this.deadLine = deadLine;
+	public void setDataFinal(Date dataFinal) {
+		this.dataFinal = dataFinal;
+	}
+
+	public TaskPriority getPrioridade() {
+		return prioridade;
+	}
+
+	public void setPrioridade(TaskPriority prioridade) {
+		this.prioridade = prioridade;
+	}
+
+	public Boolean getConcluido() {
+		return concluido;
+	}
+
+	public void setConcluido(Boolean concluido) {
+		this.concluido = concluido;
 	}
 
 	public Date getCreatedAt() {
@@ -123,14 +144,15 @@ public class Task {
 		this.updatedAt = updatedAt;
 	}
 
-	public User getUser() {
-		return user;
+	public User getUsuario() {
+		return usuario;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUsuario(User usuario) {
+		this.usuario = usuario;
 	}
-	
+
+
 	
 	
 }
