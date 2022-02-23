@@ -20,6 +20,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/* 
+* @author WesNinaja
+* @since 1.0
+* @see User
+* 
+*/
+
 @Entity
 @Table(name = "tasks")
 public class Task {

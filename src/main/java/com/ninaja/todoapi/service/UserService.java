@@ -41,6 +41,19 @@ public class UserService {
 		return userRepository.findByEmail(email);
 	}
 
+	
+	/**
+	 * Public method used to register a user in the system's database. This method
+	 * returns a BAD_REQUEST if the intention to register already has an email
+	 * registered in the system, to avoid duplication. If you don't hear an existing
+	 * email in the system, it returns CREATED status with user object in response.
+	 * 
+	 * @param newUser, UserRegisterDTO object.
+	 * @return ResponseEntity<User>
+	 * @author WesNinaja
+	 * @since 1.0
+	 * 
+	 */
 	public ResponseEntity<User> registerUser(@Valid UserRegisterDTO newUser, Errors errors) {
 		if (errors.hasErrors()) {
 			throw new ErrorInRegistrationException();
@@ -60,6 +73,15 @@ public class UserService {
 		}
 	}
 
+	
+	/**
+	 * Public method used to uptade a user in the system's database. 	 * 
+	 * @param usuario, User object.
+	 * @return ResponseEntity<User>
+	 * @author WesNinaja
+	 * @since 1.0
+	 * 
+	 */
 	public Optional<User> updateUser(User usuario) {
 		if (userRepository.findByEmail(usuario.getEmail()).isPresent()) {
 
@@ -77,7 +99,18 @@ public class UserService {
 		return Optional.empty();
 
 	}
-
+	
+	/**
+	 * Private static method, used to encrypt with BCryptPasswordEncoder format a
+	 * string passed as a parameter.
+	 * 
+	 * @param password, String format.
+	 * @return String
+	 * @author WesNinaja
+	 * @since 1.0
+	 * @see BCryptPasswordEncoder
+	 * 
+	 */
 	private static String encryptPassword(String password) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		return encoder.encode(password);

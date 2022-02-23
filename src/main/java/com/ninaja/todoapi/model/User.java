@@ -12,6 +12,13 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/* 
+* @author WesNinaja
+* @since 1.0
+* @see Task
+* 
+*/
+
 @Entity
 @Table(name = "usuarios")
 public class User {
