@@ -6,12 +6,13 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.validation.Errors;
 
+import com.ninaja.todoapi.exceptions.models.ErrorInRegistrationException;
+import com.ninaja.todoapi.exceptions.models.ExistingEmailException;
 import com.ninaja.todoapi.helpers.PasswordValidate;
 import com.ninaja.todoapi.model.User;
 import com.ninaja.todoapi.model.dto.UserRegisterDTO;
@@ -27,24 +28,6 @@ public class UserService {
 	private UserRepository userRepository;
 	private User user;
 
-	public ResponseEntity<User> registerUser(@Valid UserRegisterDTO newUser) {
-		Optional<User> optional = userRepository.findByEmail(newUser.getEmail());
-		if (optional.isPresent()) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-					"Usuario ja existente, cadastre com outro email!");
-		} else {
-			user = new User();
-			user.setNome(newUser.getNome());
-			user.setEmail(newUser.getEmail());
-			if (PasswordValidate.validator(newUser.getSenha())) {
-				user.setSenha(encryptPassword(newUser.getSenha()));
-				return ResponseEntity.status(201).body(userRepository.save(user));
-			} else
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-						"Senha não é forte, precisa ter ter pelo 6 digitos, com números, letras minúsculas, maiúsculas e caracteres especiais.");
-		}
-	}
-
 	public List<User> listAllUsers() {
 		return userRepository.findAll();
 	}
@@ -58,6 +41,25 @@ public class UserService {
 		return userRepository.findByEmail(email);
 	}
 
+	public ResponseEntity<User> registerUser(@Valid UserRegisterDTO newUser, Errors errors) {
+		if (errors.hasErrors()) {
+			throw new ErrorInRegistrationException();
+		}
+		Optional<User> optional = userRepository.findByEmail(newUser.getEmail());
+		if (optional.isPresent()) {
+			throw new ExistingEmailException(newUser.getEmail());
+		} else {
+			user = new User();
+			user.setNome(newUser.getNome());
+			user.setEmail(newUser.getEmail());
+			if (PasswordValidate.validator(newUser.getSenha())) {
+				user.setSenha(encryptPassword(newUser.getSenha()));
+				return ResponseEntity.status(201).body(userRepository.save(user));
+			} else
+				throw new ErrorInRegistrationException();
+		}
+	}
+
 	public Optional<User> updateUser(User usuario) {
 		if (userRepository.findByEmail(usuario.getEmail()).isPresent()) {
 
@@ -69,8 +71,7 @@ public class UserService {
 
 				return Optional.ofNullable(userRepository.save(findUser.get()));
 			} else
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-						"Senha não é forte, precisa ter ter pelo 6 digitos, com números, letras minúsculas, maiúsculas e caracteres especiais.");
+				throw new ErrorInRegistrationException();
 		}
 
 		return Optional.empty();
