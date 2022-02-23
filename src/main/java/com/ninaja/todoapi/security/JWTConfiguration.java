@@ -3,6 +3,7 @@ package com.ninaja.todoapi.security;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -18,10 +19,13 @@ public class JWTConfiguration extends WebSecurityConfigurerAdapter {
 		this.userService = userService;
 		this.passwordEncoder = passwordEncoder;
 	}
+	
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
+		
+		
 	}
 
 	@Override
@@ -29,9 +33,7 @@ public class JWTConfiguration extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 		
 			.antMatchers(HttpMethod.POST, "/api/v1/users/save").permitAll()
-			.antMatchers(HttpMethod.POST, "/login").permitAll()
-			.antMatchers(HttpMethod.GET, "/api/v1/users/{id}").permitAll()
-                        .antMatchers("/h2-console/**").permitAll()
+			.antMatchers(HttpMethod.POST, "/login").permitAll()			
 			.anyRequest().authenticated()
 			.and()
 			.addFilter(new JWTAuthenticateFilter(authenticationManager()))
@@ -40,13 +42,16 @@ public class JWTConfiguration extends WebSecurityConfigurerAdapter {
 			.and().cors()
 			.and().csrf().disable();
 	}
-
-	/* @Bean
-	    CorsConfigurationSource corsConfigurationSource() {
-	        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-	        CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
-	        source.registerCorsConfiguration("/**", corsConfiguration);
-	        return source;
-	    }*/
+	
+	  @Override
+	    public void configure(WebSecurity web) throws Exception {
+	        web.ignoring().antMatchers("/v3/api-docs/**",
+	                                   "/configuration/ui",
+	                                   "/swagger-resources/**",
+	                                   "/configuration/security",
+	                                   "/swagger-ui.html",
+	                                   "/swagger-ui/**");
+	        
+	    }
 	 
 }

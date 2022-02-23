@@ -21,7 +21,7 @@ public class SwaggerConfiguration {
 	public OpenAPI springProjetoIntegradorOpenAPI() {
 		return new OpenAPI()
 				.info(new Info()
-					.title("To Do Ninaja")
+					.title("To-Do List Ninaja")
 					.description("Desafio Back-end To Do API")
 					.version("v0.0.1")
 				.license(new License()
@@ -32,7 +32,7 @@ public class SwaggerConfiguration {
 					.url("https://github.com/WesNinaja")
 					.email("wesleyninaja@gmail.com")))
 				.externalDocs(new ExternalDocumentation()
-					.description("Github")
+					.description("Github Project")
 					.url("https://github.com/WesNinaja/to-do-list-ninaja"));
 	}
 
@@ -49,6 +49,7 @@ public class SwaggerConfiguration {
 				apiResponses.addApiResponse("204", createApiResponse("Objeto Excluído!"));
 				apiResponses.addApiResponse("400", createApiResponse("Erro na Requisição!"));
 				apiResponses.addApiResponse("401", createApiResponse("Acesso Não Autorizado!"));
+				apiResponses.addApiResponse("403", createApiResponse("Acesso Não Autorizado!"));
 				apiResponses.addApiResponse("404", createApiResponse("Objeto Não Encontrado!"));
 				apiResponses.addApiResponse("500", createApiResponse("Erro na Aplicação!"));
 
