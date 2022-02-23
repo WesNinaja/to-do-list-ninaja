@@ -3,8 +3,10 @@ package com.ninaja.todoapi.security;
 import java.util.Arrays;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,6 +17,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+@EnableGlobalMethodSecurity(securedEnabled = true)
+@Configuration
 @EnableWebSecurity
 public class JWTConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -43,6 +47,7 @@ public class JWTConfiguration extends WebSecurityConfigurerAdapter {
 	      .requiresSecure();
 		http.authorizeRequests()
 		
+			.antMatchers("/**").permitAll()
 			.antMatchers(HttpMethod.POST, "/api/v1/users/save").permitAll()
 			.antMatchers(HttpMethod.POST, "/login").permitAll()			
 			.anyRequest().authenticated()
@@ -60,9 +65,11 @@ public class JWTConfiguration extends WebSecurityConfigurerAdapter {
 	                                   "/configuration/ui",
 	                                   "/swagger-resources/**",
 	                                   "/configuration/security",
+	                                   "/configuration/**",
 	                                   "/swagger-ui.html",
-	                                   "/swagger-ui/**");
-	        
+	                                   "/swagger-ui/**",
+	                                   "/webjars/**");
+
 	    }
 	  
 	  @Bean
