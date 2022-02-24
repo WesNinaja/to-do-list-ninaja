@@ -56,7 +56,7 @@ public class JWTConfiguration extends WebSecurityConfigurerAdapter {
 	      .requiresSecure();
 		http.authorizeRequests()
 		
-			.antMatchers("/*").permitAll()
+			.antMatchers("/**").permitAll()
 			.antMatchers(HttpMethod.POST, "/api/v1/users/save").permitAll()
 			.antMatchers(HttpMethod.POST, "/login").permitAll()			
 			.anyRequest().authenticated()
