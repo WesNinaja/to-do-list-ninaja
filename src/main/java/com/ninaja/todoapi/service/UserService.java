@@ -36,12 +36,6 @@ public class UserService {
 	private UserRepository userRepository;
 	private User user;
 	
-	/*
-	@Autowired
-	private JWTAuthenticateFilter authFilter;
-	
-	@Autowired
-	private AuthenticationManager authenticationManager;*/
 
 	public List<User> listAllUsers() {
 		return userRepository.findAll();
@@ -55,8 +49,6 @@ public class UserService {
 	public Optional<User> findByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
-	
-	
 
 	
 	/**
@@ -89,25 +81,6 @@ public class UserService {
 				throw new ErrorInRegistrationException();
 		}
 	}		
-			
-			
-			
-	/*public ResponseEntity<User> login (HttpServletRequest request, HttpServletResponse response)  throws AuthenticationException {
-		try {
-            User usuario = new ObjectMapper()
-                    .readValue(request.getInputStream(), User.class);
-
-            return (ResponseEntity<User>) authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    usuario.getEmail(),
-                    usuario.getSenha(),
-                    new ArrayList<>()
-            ));
-
-        } catch (IOException e) {
-            throw new RuntimeException("Falha ao autenticar usuario", e);
-        }
-
-    }*/
 
 	
 	/**

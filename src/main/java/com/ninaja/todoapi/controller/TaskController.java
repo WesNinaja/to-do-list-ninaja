@@ -35,9 +35,6 @@ public class TaskController {
         
         private @Autowired UserRepository userRepository;  
         private @Autowired TaskRepository taskRepository; 
- 
-	
-	
 	
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)

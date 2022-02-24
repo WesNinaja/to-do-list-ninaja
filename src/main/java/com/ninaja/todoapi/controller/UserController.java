@@ -21,11 +21,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ninaja.todoapi.exceptions.ModelError;
 import com.ninaja.todoapi.model.User;
 import com.ninaja.todoapi.model.dto.UserRegisterDTO;
 import com.ninaja.todoapi.repository.UserRepository;
 import com.ninaja.todoapi.security.JwtUtils;
 import com.ninaja.todoapi.service.UserService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @CrossOrigin("*")
@@ -45,6 +52,7 @@ public class UserController {
 	private @Autowired UserService userService;
 	private @Autowired UserRepository repository;
 
+	
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	public List<User> getAllUsers() {
@@ -64,17 +72,36 @@ public class UserController {
 	}
 	
 
+    @Operation(summary = "Register new user")
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "201",
+            description = "Created",
+            content = { @Content(mediaType = "application/json", schema = @Schema(implementation = User.class)) }
+        ),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid name, email or password",
+            content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ModelError.class)) }
+        ),
+        @ApiResponse(
+            responseCode = "422",
+            description = "User already registered",
+            content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ModelError.class)) }
+        ),
+        @ApiResponse(
+            responseCode = "500",
+            description = "Internal server error",
+            content = @Content
+        )
+    })
 	@PostMapping("/save")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<User> registerUser(@Valid @RequestBody UserRegisterDTO newUser, Errors errors) {
 		return userService.registerUser(newUser, errors);
 	}
-	
-	 /*@PutMapping("/login")
-	    public ResponseEntity<User> credentials(@Valid @RequestBody User user){
-	    	return userService.login(user.getEmail(), user.getSenha());
-	    }*/
 
+   
 	@PutMapping("/update")
 	public ResponseEntity<User> updateUser(@Valid @RequestBody User user) {
 

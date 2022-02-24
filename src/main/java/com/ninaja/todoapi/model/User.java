@@ -38,8 +38,6 @@ public class User {
 	
 	public User() {
 	}
-	
-	
 
 
 	public User(Long id, String nome, String email,  String senha) {
@@ -51,9 +49,7 @@ public class User {
 		
 	}
 
-
-
-
+	
 	//Getters and Setters
 	public Long getId() {
 		return id;
