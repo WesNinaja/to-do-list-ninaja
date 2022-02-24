@@ -8,6 +8,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,12 +24,23 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ninaja.todoapi.model.User;
 import com.ninaja.todoapi.model.dto.UserRegisterDTO;
 import com.ninaja.todoapi.repository.UserRepository;
+import com.ninaja.todoapi.security.JwtUtils;
 import com.ninaja.todoapi.service.UserService;
 
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api/v1/users")
 public class UserController {
+	
+	@Autowired(required=true)
+    AuthenticationManager authenticationManager;
+
+
+    @Autowired
+    PasswordEncoder encoder;
+
+    @Autowired
+    JwtUtils jwtUtils;
 
 	private @Autowired UserService userService;
 	private @Autowired UserRepository repository;
@@ -49,12 +62,18 @@ public class UserController {
 	public ResponseEntity<Optional<User>> findByEmail(@PathVariable String email) {
 		return ResponseEntity.ok(repository.findByEmail(email));
 	}
+	
 
 	@PostMapping("/save")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<User> registerUser(@Valid @RequestBody UserRegisterDTO newUser, Errors errors) {
 		return userService.registerUser(newUser, errors);
 	}
+	
+	 /*@PutMapping("/login")
+	    public ResponseEntity<User> credentials(@Valid @RequestBody User user){
+	    	return userService.login(user.getEmail(), user.getSenha());
+	    }*/
 
 	@PutMapping("/update")
 	public ResponseEntity<User> updateUser(@Valid @RequestBody User user) {

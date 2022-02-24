@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -38,6 +39,14 @@ public class JWTConfiguration extends WebSecurityConfigurerAdapter {
 		
 		
 	}
+	
+	@Override
+	@Bean
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+	    return super.authenticationManagerBean();
+	}
+
+	
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -47,7 +56,7 @@ public class JWTConfiguration extends WebSecurityConfigurerAdapter {
 	      .requiresSecure();
 		http.authorizeRequests()
 		
-			.antMatchers("/**").permitAll()
+			.antMatchers("/*").permitAll()
 			.antMatchers(HttpMethod.POST, "/api/v1/users/save").permitAll()
 			.antMatchers(HttpMethod.POST, "/login").permitAll()			
 			.anyRequest().authenticated()
@@ -59,6 +68,8 @@ public class JWTConfiguration extends WebSecurityConfigurerAdapter {
 			.and().csrf().disable();
 	}
 	
+
+	
 	  @Override
 	    public void configure(WebSecurity web) throws Exception {
 	        web.ignoring().antMatchers("/v3/api-docs/**",
@@ -68,7 +79,8 @@ public class JWTConfiguration extends WebSecurityConfigurerAdapter {
 	                                   "/configuration/**",
 	                                   "/swagger-ui.html",
 	                                   "/swagger-ui/**",
-	                                   "/webjars/**");
+	                                   "/webjars/**",
+	                                   "/h2-console/**");
 
 	    }
 	  

@@ -6,7 +6,9 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
@@ -17,16 +19,29 @@ import com.ninaja.todoapi.helpers.PasswordValidate;
 import com.ninaja.todoapi.model.User;
 import com.ninaja.todoapi.model.dto.UserRegisterDTO;
 import com.ninaja.todoapi.repository.UserRepository;
+import com.ninaja.todoapi.security.JWTAuthenticateFilter;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
+	
+	public static final int TOKEN_EXPIRACAO = 600_000;
+    public static final String TOKEN_SENHA = "463408a1-54c9-4307-bb1c-6cced559f5a7";
+    
+   
 
 	@Autowired
 	private UserRepository userRepository;
 	private User user;
+	
+	/*
+	@Autowired
+	private JWTAuthenticateFilter authFilter;
+	
+	@Autowired
+	private AuthenticationManager authenticationManager;*/
 
 	public List<User> listAllUsers() {
 		return userRepository.findAll();
@@ -40,6 +55,8 @@ public class UserService {
 	public Optional<User> findByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
+	
+	
 
 	
 	/**
@@ -71,7 +88,26 @@ public class UserService {
 			} else
 				throw new ErrorInRegistrationException();
 		}
-	}
+	}		
+			
+			
+			
+	/*public ResponseEntity<User> login (HttpServletRequest request, HttpServletResponse response)  throws AuthenticationException {
+		try {
+            User usuario = new ObjectMapper()
+                    .readValue(request.getInputStream(), User.class);
+
+            return (ResponseEntity<User>) authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    usuario.getEmail(),
+                    usuario.getSenha(),
+                    new ArrayList<>()
+            ));
+
+        } catch (IOException e) {
+            throw new RuntimeException("Falha ao autenticar usuario", e);
+        }
+
+    }*/
 
 	
 	/**
@@ -111,7 +147,7 @@ public class UserService {
 	 * @see BCryptPasswordEncoder
 	 * 
 	 */
-	private static String encryptPassword(String password) {
+	public static String encryptPassword(String password) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		return encoder.encode(password);
 	}

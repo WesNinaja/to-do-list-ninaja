@@ -1,34 +1,25 @@
-package com.ninaja.todoapi.model;
+package com.ninaja.todoapi.model.dto;
 
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ninaja.todoapi.model.Task;
 
-/* 
-* @author WesNinaja
-* @since 1.0
-* @see Task
-* 
-*/
-
-@Entity
-@Table(name = "tb_usuarios")
-public class User {
-
+public class CredentialsDTO {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String email;
 	private String nome;
 	private String senha;
+	private String jwt;
 	
 
 
@@ -36,18 +27,19 @@ public class User {
 	@JsonIgnoreProperties("usuario")
 	private List<Task> tarefas;
 	
-	public User() {
+	public CredentialsDTO() {
 	}
 	
 	
 
 
-	public User(Long id, String nome, String email,  String senha) {
+	public CredentialsDTO(Long id, String nome, String email,  String senha, String jwt) {
 		super();
 		this.id = id;
 		this.email = email;
 		this.nome = nome;
 		this.senha = senha;
+		this.jwt = jwt;
 		
 	}
 
@@ -112,10 +104,21 @@ public class User {
 	public void setTarefas(List<Task> tarefas) {
 		this.tarefas = tarefas;
 	}
-	
 
-	
-	
+
+
+
+	public String getJwt() {
+		return jwt;
+	}
+
+
+
+
+	public void setJwt(String jwt) {
+		this.jwt = jwt;
+	}
+
 	
 
 }

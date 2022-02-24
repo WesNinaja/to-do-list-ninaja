@@ -16,7 +16,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -28,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 */
 
 @Entity
-@Table(name = "tasks")
+@Table(name = "tb_tarefas")
 public class Task {
 
 	 
@@ -53,12 +52,11 @@ public class Task {
 	private Boolean concluido = false;
 
 	@CreationTimestamp
-	@Column(name = "created_at", nullable = false, updatable = false)
-	private Date createdAt;
+	@Column(name = "criado_em", nullable = false, updatable = false)
+	private Date criadoEm;
 
-	@UpdateTimestamp
-	@Column(name = "updated_at")
-	private Date updatedAt;
+	@Column(name = "atualizado_em")
+	private Date atualizadoEm;
 	
 	@ManyToOne
 	@JoinColumn(name = "fk_usuario")
@@ -70,16 +68,16 @@ public class Task {
 	public Task() {
 	}
 	
-	public Task(Long id, String titulo, String descricao, TaskPriority prioridade, Date dataFinal, Boolean concluido, Date createdAt,
-			Date updatedAt, User usuario) {
+	public Task(Long id, String titulo, String descricao, TaskPriority prioridade, Date dataFinal, Boolean concluido, Date criadoEm,
+			Date atualizadoEm, User usuario) {
 		this.id = id;
 		this.titulo = titulo;
 		this.descricao = descricao;
 		this.prioridade = prioridade;
 		this.dataFinal = dataFinal;
 		this.concluido = concluido;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
+		this.criadoEm = criadoEm;
+		this.atualizadoEm = atualizadoEm;
 		this.usuario = usuario;
 		
 	}
@@ -135,20 +133,20 @@ public class Task {
 		this.concluido = concluido;
 	}
 
-	public Date getCreatedAt() {
-		return createdAt;
+	public Date getCriadoEm() {
+		return criadoEm;
 	}
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
+	public void setCreatedAt(Date criadoEm) {
+		this.criadoEm = criadoEm;
 	}
 
 	public Date getUpdatedAt() {
-		return updatedAt;
+		return atualizadoEm;
 	}
 
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
+	public void setUpdatedAt(Date atualizadoEm) {
+		this.atualizadoEm = atualizadoEm;
 	}
 
 	public User getUsuario() {
