@@ -12,7 +12,7 @@
 - Swagger (Documentar API)
 - H2 (Banco de Datos)
 
-**A docuemntação da API fiz usando o Swagger, e podem ver a documentação entrando [aquí](https://apptodolistninaja.herokuapp.com/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config). Esta é a versão da API com JWT, ou seja, precisamos cadastrar um usuario com nome, email e senha, e depois fazer o login com email e senha para gerar o TOKEN e poder usar a API.**
+**A docuemntação da API fiz usando o Swagger, e podem ver a documentação entrando no link (https://apptodolistninaja.herokuapp.com/). Esta é a versão da API com JWT, ou seja, precisamos cadastrar um usuario com nome, email e senha, e depois fazer o login com email e senha para gerar o TOKEN e poder usar a API.**
 
 **A senha deve ter no mínimo 6 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais. O formato para se cadastrar com nome, email e senha é o seguinte:**
 
